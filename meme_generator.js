@@ -46,3 +46,5 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	listGallery.addEventListener('click', remove, false);
 });
+
+// First Springboard Assessment
