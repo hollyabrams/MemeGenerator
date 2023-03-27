@@ -1,50 +1,65 @@
-document.addEventListener('DOMContentLoaded', function() {
-	const memeForm = document.getElementById('meme-form');
-	const listGallery = document.querySelector('.gallery');
-
-	memeForm.addEventListener('submit', function(event) {
-		event.preventDefault();
-
-		// creating the li image elements
-		const memeLi = document.createElement('li');
-		memeLi.classList.add('meme-img');
-
-		// creating the gallery
-		const urlInput = document.getElementById('uploaded-img').value,
-			src = urlInput,
-			img = document.createElement('img');
-		img.src = src;
-
-		// adding text to the top of the div
-		const topTextDiv = document.createElement('div');
-		topTextDiv.classList.add('text', 'top');
-		topTextDiv.innerText = document.getElementById('text-top').value;
-
-		// adding text to the bottom of the div
-		const bottomTextDiv = document.createElement('div');
-		bottomTextDiv.classList.add('text', 'bottom');
-		bottomTextDiv.innerText = document.getElementById('text-bottom').value;
-
-		// remove div
-		const removeDiv = document.createElement('div');
-		removeDiv.classList.add('red-cross');
-		removeDiv.innerText = 'X';
-		removeDiv.style.color = 'darkred';
-
-		listGallery.appendChild(memeLi);
-		memeLi.appendChild(img);
-		memeLi.appendChild(topTextDiv);
-		memeLi.appendChild(bottomTextDiv);
-		memeLi.appendChild(removeDiv);
-
-		memeForm.reset();
-	});
-
-	function remove(event) {
-		event.target.parentNode.remove();
+document.addEventListener("DOMContentLoaded", function() {
+	var form = document.querySelector("#meme-form");
+	var container = document.querySelector(".container");
+  
+	form.addEventListener("submit", handleSubmit);
+	container.addEventListener("click", handleRemove);
+  
+	function handleSubmit(e) {
+	  e.preventDefault();
+  
+	  // grab values from form
+	  var imageUrl = e.target.image.value;
+	  var textAbove = e.target.text_above.value;
+	  var textBelow = e.target.text_below.value;
+  
+	  // add card for meme
+	  addMeme(imageUrl, textAbove, textBelow);
+  
+	  // reset form
+	  e.target.reset();
 	}
-
-	listGallery.addEventListener('click', remove, false);
-});
+  
+	function addMeme(imageUrl, textAbove, textBelow) {
+	  var memeRow = document.querySelector(".container > .row");
+  
+	  // build HTML structure for new meme
+	  var memeWrapper = document.createElement("div");
+	  memeWrapper.classList.add("col-md-6", "col-12");
+  
+	  var newMeme = document.createElement("div");
+	  newMeme.classList.add("meme");
+	  memeWrapper.appendChild(newMeme);
+  
+	  var overlay = document.createElement("div");
+	  overlay.classList.add("overlay");
+	  newMeme.appendChild(overlay);
+  
+	  var x = document.createElement("span");
+	  x.classList.add("oi", "oi-x");
+	  overlay.appendChild(x);
+  
+	  var pAbove = document.createElement("p");
+	  pAbove.innerText = textAbove;
+	  newMeme.appendChild(pAbove);
+  
+	  var img = document.createElement("img");
+	  img.src = imageUrl;
+	  newMeme.appendChild(img);
+  
+	  var pBelow = document.createElement("p");
+	  pBelow.innerText = textBelow;
+	  newMeme.appendChild(pBelow);
+  
+	  // append new meme to DOM
+	  memeRow.appendChild(memeWrapper);
+	}
+  
+	function handleRemove(e) {
+	  if (e.target.classList.contains("overlay")) {
+		e.target.parentElement.parentElement.remove();
+	  }
+	}
+  });
 
 // First Springboard Assessment
